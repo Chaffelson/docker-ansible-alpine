@@ -7,11 +7,13 @@
 #
 # ENVIRONMENT VARIABLES:
 #
-#    - PIP_REQUIREMENTS:        pip requirements filename;
-#                               default = "requirements.txt"
-#    - ANSIBLE_REQUIREMENTS:    ansible requirements filename;
-#                               default = "requirements.yml"
-#    - DEPLOY_KEY               deploy key (private)
+#    - PIP_REQUIREMENTS:                  pip requirements filename;
+#                                         default = "requirements.txt"
+#    - ANSIBLE_ROLE_REQUIREMENTS:         ansible requirements filename;
+#                                         default = "role_requirements.yml"
+#    - ANSIBLE_COLLECTION_REQUIREMENTS:   ansible requirements filename;
+#                                         default = "collection_requirements.yml"
+#    - DEPLOY_KEY                         deploy key (private)
 
 # Rotate ansible log if exist
 if [ -f "ansible.log" ]; then
@@ -46,12 +48,21 @@ fi
 
 
 # install Galaxy roles, if any
-if [ -z "$ANSIBLE_REQUIREMENTS" ]; then
-    ANSIBLE_REQUIREMENTS=requirements.yml
+if [ -z "$ANSIBLE_ROLE_REQUIREMENTS" ]; then
+    ANSIBLE_ROLE_REQUIREMENTS=role_requirements.yml
 fi
 
-if [ -f "$ANSIBLE_REQUIREMENTS" ]; then
-    ansible-galaxy install $ANSIBLE_GALAXY_PARAM -r $ANSIBLE_REQUIREMENTS
+if [ -f "$ANSIBLE_ROLE_REQUIREMENTS" ]; then
+    ansible-galaxy install $ANSIBLE_GALAXY_PARAM -r $ANSIBLE_ROLE_REQUIREMENTS
+fi
+
+# install Galaxy collections, if any
+if [ -z "$ANSIBLE_COLLECTION_REQUIREMENTS" ]; then
+    ANSIBLE_COLLECTION_REQUIREMENTS=collection_requirements.yml
+fi
+
+if [ -f "$ANSIBLE_COLLECTION_REQUIREMENTS" ]; then
+    ansible-galaxy collection install $ANSIBLE_GALAXY_PARAM -r $ANSIBLE_COLLECTION_REQUIREMENTS
 fi
 
 exec "$@"

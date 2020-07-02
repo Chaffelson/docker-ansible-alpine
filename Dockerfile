@@ -6,6 +6,7 @@ ARG ANSIBLE_VERSION
 ARG ANSIBLE_LINT_VERSION
 ARG VCS_REF
 ARG ADDITIONAL_PYTHON_REQS
+ARG ANSIBLE_COLLECTION_PREINSTALL
 
 # Metadata
 LABEL maintainer="Pascal A. <pascalito@gmail.com>" \
@@ -43,6 +44,8 @@ RUN apk --update add --virtual \
  && apk del \
         .build-deps \
  && rm -rf /var/cache/apk/*
+
+RUN if [ -n "$ANSIBLE_COLLECTION_PREINSTALL" ]; then ansible-galaxy collection install ${ANSIBLE_COLLECTION_PREINSTALL} ; fi
 
 RUN mkdir -p /etc/ansible \
  && echo 'localhost' > /etc/ansible/hosts \

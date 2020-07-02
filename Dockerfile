@@ -5,6 +5,7 @@ ARG BUILD_DATE
 ARG ANSIBLE_VERSION
 ARG ANSIBLE_LINT_VERSION
 ARG VCS_REF
+ARG ADDITIONAL_PYTHON_REQS
 
 # Metadata
 LABEL maintainer="Pascal A. <pascalito@gmail.com>" \
@@ -38,6 +39,7 @@ RUN apk --update add --virtual \
  && pip3 install \
         ansible==${ANSIBLE_VERSION} \
         ansible-lint==${ANSIBLE_LINT_VERSION} \
+ && if [ -n "$ADDITIONAL_PYTHON_REQS" ]; then pip3 install -r ${ADDITIONAL_PYTHON_REQS} ; fi \
  && apk del \
         .build-deps \
  && rm -rf /var/cache/apk/*

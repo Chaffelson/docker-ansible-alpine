@@ -45,7 +45,7 @@ RUN apk --update add --virtual \
         .build-deps \
  && rm -rf /var/cache/apk/*
 
-RUN if [ -n "$ANSIBLE_COLLECTION_PREINSTALL" ]; then ansible-galaxy collection install ${ANSIBLE_COLLECTION_PREINSTALL} -p /ansible; fi
+RUN if [ -n "$ANSIBLE_COLLECTION_PREINSTALL" ]; then ansible-galaxy collection install ${ANSIBLE_COLLECTION_PREINSTALL}; fi
 
 RUN mkdir -p /etc/ansible \
  && echo 'localhost' > /etc/ansible/hosts \

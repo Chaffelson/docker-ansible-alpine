@@ -9,9 +9,9 @@
 #
 #    - PIP_REQUIREMENTS:                  pip requirements filename;
 #                                         default = "requirements.txt"
-#    - ANSIBLE_ROLE_REQUIREMENTS:         ansible requirements filename;
-#                                         default = "role_requirements.yml"
-#    - ANSIBLE_COLLECTION_REQUIREMENTS:   ansible requirements filename;
+#    - ANSIBLE_REQUIREMENTS:              ansible role requirements filename;
+#                                         default = "requirements.yml"
+#    - ANSIBLE_COLLECTION_REQUIREMENTS:   ansible collection requirements filename;
 #                                         default = "collection_requirements.yml"
 #    - DEPLOY_KEY                         deploy key (private)
 
@@ -48,12 +48,12 @@ fi
 
 
 # install Galaxy roles, if any
-if [ -z "$ANSIBLE_ROLE_REQUIREMENTS" ]; then
-    ANSIBLE_ROLE_REQUIREMENTS=role_requirements.yml
+if [ -z "$ANSIBLE_REQUIREMENTS" ]; then
+    ANSIBLE_REQUIREMENTS=requirements.yml
 fi
 
-if [ -f "$ANSIBLE_ROLE_REQUIREMENTS" ]; then
-    ansible-galaxy install $ANSIBLE_GALAXY_PARAM -r $ANSIBLE_ROLE_REQUIREMENTS
+if [ -f "$ANSIBLE_REQUIREMENTS" ]; then
+    ansible-galaxy install $ANSIBLE_GALAXY_PARAM -r $ANSIBLE_REQUIREMENTS
 fi
 
 # install Galaxy collections, if any

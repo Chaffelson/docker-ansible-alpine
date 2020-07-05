@@ -1,10 +1,17 @@
-FROM alpine:3.11
+FROM alpine:3.10
+# 3.10 is the last version with Python 3.7 as default. Azure is not compatible with Python 3.8 as of June2020
 
 # Metadata params
 ARG BUILD_DATE
 ARG ANSIBLE_VERSION
 ARG ANSIBLE_LINT_VERSION
 ARG VCS_REF
+# Python requirements file for additional modules to install while the deps are loaded
+ARG ADDITIONAL_PYTHON_REQS
+# space separated list of Ansible Collections to install during build
+ARG ANSIBLE_COLLECTION_PREINSTALL
+# This will install the Azure CLI in a separate virtualenv and put it on PATH as it is fairly incompatible with many things
+ARG INCLUDE_AZURE_CLI
 
 # Metadata
 LABEL maintainer="Pascal A. <pascalito@gmail.com>" \
@@ -24,6 +31,7 @@ RUN apk --update --no-cache add \
         openssl \
         python3\
         rsync \
+        bash \
         sshpass
 
 RUN apk --update add --virtual \
@@ -31,6 +39,7 @@ RUN apk --update add --virtual \
         python3-dev \
         libffi-dev \
         openssl-dev \
+        wget \
         build-base \
  && pip3 install --upgrade \
         pip \
@@ -38,9 +47,13 @@ RUN apk --update add --virtual \
  && pip3 install \
         ansible==${ANSIBLE_VERSION} \
         ansible-lint==${ANSIBLE_LINT_VERSION} \
+ && if [ -n "$ADDITIONAL_PYTHON_REQS" ]; then pip3 install -r ${ADDITIONAL_PYTHON_REQS} ; fi \
+ && if [ -n "$INCLUDE_AZURE_CLI" ]; then wget -q https://azurecliprod.blob.core.windows.net/install.py && printf "\n/usr/local/bin\nn\n" | python3 install.py ; fi \
  && apk del \
         .build-deps \
  && rm -rf /var/cache/apk/*
+
+RUN if [ -n "$ANSIBLE_COLLECTION_PREINSTALL" ]; then ansible-galaxy collection install ${ANSIBLE_COLLECTION_PREINSTALL}; fi
 
 RUN mkdir -p /etc/ansible \
  && echo 'localhost' > /etc/ansible/hosts \

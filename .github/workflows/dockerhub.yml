@@ -1,0 +1,30 @@
+name: Docker Image CI
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Login to DockerHub Registry
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+      - name: Get the version
+        id: vars
+        run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+      - name: Build the tagged Docker image
+        run: docker build . --file Dockerfile --tag chaffelson/cdp-ansible:${{steps.vars.outputs.tag}} -build-arg VCS_REF=`git rev-parse --short HEAD` --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”` --build-arg ANSIBLE_VERSION=${ANSIBLE_VERSION} --build-arg ANSIBLE_LINT_VERSION=${ANSIBLE_LINT_VERSION} --build-arg ADDITIONAL_PYTHON_REQS=${ADDITIONAL_PYTHON_REQS} --build-arg ANSIBLE_COLLECTION_PREINSTALL=${ANSIBLE_COLLECTION_PREINSTALL} --build-arg INCLUDE_AZURE_CLI=${INCLUDE_AZURE_CLI}
+        env:
+          ANSIBLE_VERSION: 2.9.10
+          ANSIBLE_LINT_VERSION: 4.2.0
+          ADDITIONAL_PYTHON_REQS: 'https://gist.githubusercontent.com/Chaffelson/90da99f429fb0837fce7684aa0938971/raw/b036a7d4a893a5a3cd52e7a1118e58b11790040c/fef0_python_reqs.txt'
+          ANSIBLE_COLLECTION_PREINSTALL: 'azure.azcollection community.aws amazon.aws'
+          INCLUDE_AZURE_CLI: true
+      - name: Push the tagged Docker image
+        run: docker push chaffelson/cdp-ansible:${{steps.vars.outputs.tag}}
+      - name: Also Tag the build as Latest
+        run: docker tag chaffelson/cdp-ansible:${{steps.vars.outputs.tag}} chaffelson/cdp-ansible:latest
+      - name: Push the latest Docker image
+        run: docker push chaffelson/cdp-ansible:latest

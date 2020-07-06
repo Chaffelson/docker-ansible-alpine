@@ -3,10 +3,9 @@
 
 docker build --build-arg VCS_REF=`git rev-parse --short HEAD` \
              --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”` \
-             --build-arg IMAGE_VERSION=`date -u +”%Y%m%d”` \
              --build-arg ANSIBLE_VERSION=${ANSIBLE_VERSION} \
              --build-arg ANSIBLE_LINT_VERSION=${ANSIBLE_LINT_VERSION} \
              --build-arg ADDITIONAL_PYTHON_REQS=${ADDITIONAL_PYTHON_REQS} \
              --build-arg ANSIBLE_COLLECTION_PREINSTALL=${ANSIBLE_COLLECTION_PREINSTALL} \
              --build-arg INCLUDE_AZURE_CLI=${INCLUDE_AZURE_CLI} \
-             -t cdp-ansible .
+             -t $IMAGE_NAME .

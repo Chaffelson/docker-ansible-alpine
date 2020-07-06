@@ -1,4 +1,4 @@
 #!/bin/sh
 
-docker tag ${IMAGE_NAME} ${DOCKER_REPO}:${DOCKER_TAG}
-docker push $DOCKER_REPO:${DOCKER_TAG}
+docker tag ${IMAGE_NAME} cdp-ansible:${DOCKER_TAG}
+docker push cdp-ansible:${DOCKER_TAG}

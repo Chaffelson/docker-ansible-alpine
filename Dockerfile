@@ -4,6 +4,7 @@ FROM alpine:3.10
 # Metadata params
 ARG BUILD_DATE
 ARG ANSIBLE_VERSION
+ARG IMAGE_VERSION
 ARG ANSIBLE_LINT_VERSION
 ARG VCS_REF
 # Python requirements file for additional modules to install while the deps are loaded
@@ -14,14 +15,14 @@ ARG ANSIBLE_COLLECTION_PREINSTALL
 ARG INCLUDE_AZURE_CLI
 
 # Metadata
-LABEL maintainer="Pascal A. <pascalito@gmail.com>" \
-      org.label-schema.url="https://github.com/pad92/docker-ansible-alpine/blob/master/README.md" \
+LABEL maintainer="Chaffelson <chaffelson@gmail.com>" \
+      org.label-schema.url="https://github.com/Chaffelson/docker-ansible-alpine/blob/master/README.md" \
       org.label-schema.build-date=${BUILD_DATE} \
-      org.label-schema.version=${ANSIBLE_VERSION} \
-      org.label-schema.vcs-url="https://github.com/pad92/docker-ansible-alpine.git" \
+      org.label-schema.version=${IMAGE_VERSION} \
+      org.label-schema.vcs-url="https://github.com/Chaffelson/docker-ansible-alpine.git" \
       org.label-schema.vcs-ref=${VCS_REF} \
       org.label-schema.docker.dockerfile="/Dockerfile" \
-      org.label-schema.description="Ansible on alpine docker image" \
+      org.label-schema.description="Ansible on alpine with Cloudera CDP and Cloud Infra automation tooling docker image" \
       org.label-schema.schema-version="1.0"
 
 RUN apk --update --no-cache add \

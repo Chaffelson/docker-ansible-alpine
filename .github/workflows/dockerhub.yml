@@ -14,8 +14,11 @@ jobs:
       - name: Get the version
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+      - name: Get the Date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Build the tagged Docker image
-        run: docker build . --file Dockerfile --tag chaffelson/cdp-ansible:${{steps.vars.outputs.tag}} --build-arg VCS_REF=`git rev-parse --short HEAD` --build-arg BUILD_DATE=`date -u +”%Y-%m-%dT%H:%M:%SZ”` --build-arg ANSIBLE_VERSION=${ANSIBLE_VERSION} --build-arg ANSIBLE_LINT_VERSION=${ANSIBLE_LINT_VERSION} --build-arg ADDITIONAL_PYTHON_REQS=${ADDITIONAL_PYTHON_REQS} --build-arg ANSIBLE_COLLECTION_PREINSTALL=${ANSIBLE_COLLECTION_PREINSTALL} --build-arg INCLUDE_AZURE_CLI=${INCLUDE_AZURE_CLI}
+        run: docker build . --tag chaffelson/cdp-ansible:${{steps.vars.outputs.tag}} --build-arg VCS_REF=$GITHUB_REPOSITORY --build-arg BUILD_DATE=${{ steps.date.outputs.date }} --build-arg ANSIBLE_VERSION=${ANSIBLE_VERSION} --build-arg ANSIBLE_LINT_VERSION=${ANSIBLE_LINT_VERSION} --build-arg ADDITIONAL_PYTHON_REQS=${ADDITIONAL_PYTHON_REQS} --build-arg ANSIBLE_COLLECTION_PREINSTALL=${ANSIBLE_COLLECTION_PREINSTALL} --build-arg INCLUDE_AZURE_CLI=${INCLUDE_AZURE_CLI}
         env:
           ANSIBLE_VERSION: 2.9.10
           ANSIBLE_LINT_VERSION: 4.2.0

@@ -9,4 +9,4 @@ docker build --build-arg VCS_REF=`git rev-parse --short HEAD` \
              --build-arg ADDITIONAL_PYTHON_REQS=${ADDITIONAL_PYTHON_REQS} \
              --build-arg ANSIBLE_COLLECTION_PREINSTALL=${ANSIBLE_COLLECTION_PREINSTALL} \
              --build-arg INCLUDE_AZURE_CLI=${INCLUDE_AZURE_CLI} \
-             -t "${IMAGE_NAME}" .
+             -t cdp-ansible .

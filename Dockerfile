@@ -4,8 +4,8 @@ FROM alpine:3.10
 # Metadata params
 ARG BUILD_DATE
 ARG ANSIBLE_VERSION
-ARG IMAGE_VERSION
 ARG ANSIBLE_LINT_VERSION
+ARG DOCKER_TAG
 ARG VCS_REF
 # Python requirements file for additional modules to install while the deps are loaded
 ARG ADDITIONAL_PYTHON_REQS
@@ -18,7 +18,7 @@ ARG INCLUDE_AZURE_CLI
 LABEL maintainer="Chaffelson <chaffelson@gmail.com>" \
       org.label-schema.url="https://github.com/Chaffelson/docker-ansible-alpine/blob/master/README.md" \
       org.label-schema.build-date=${BUILD_DATE} \
-      org.label-schema.version=${IMAGE_VERSION} \
+      org.label-schema.version=${DOCKER_TAG} \
       org.label-schema.vcs-url="https://github.com/Chaffelson/docker-ansible-alpine.git" \
       org.label-schema.vcs-ref=${VCS_REF} \
       org.label-schema.docker.dockerfile="/Dockerfile" \

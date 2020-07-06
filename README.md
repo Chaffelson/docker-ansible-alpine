@@ -1,6 +1,6 @@
 # Docker-Ansible base image
 
-[![Layers](https://images.microbadger.com/badges/image/pad92/ansible-alpine.svg)](https://microbadger.com/images/pad92/ansible-alpine) [![GitHub issues](https://img.shields.io/github/issues/pad92/docker-ansible-alpine.svg)](https://github.com/pad92/docker-ansible-alpine) [![Docker Automated build](https://img.shields.io/docker/automated/pad92/ansible-alpine.svg?maxAge=2592000)](https://hub.docker.com/r/pad92/ansible-alpine/) [![Docker Build Status](https://img.shields.io/docker/build/pad92/ansible-alpine.svg?maxAge=2592000)](https://hub.docker.com/r/pad92/ansible-alpine/) [![Docker Pulls](https://img.shields.io/docker/pulls/pad92/ansible-alpine.svg)](https://hub.docker.com/r/pad92/ansible-alpine/)
+[![Layers](https://images.microbadger.com/badges/image/chaffelson/cdp-ansible.svg)](https://microbadger.com/images/chaffelson/cdp-ansible) [![GitHub issues](https://img.shields.io/github/issues/Chaffelson/docker-ansible-alpine.svg)](https://github.com/Chaffelson/docker-ansible-alpine) [![Github Automated build](https://img.shields.io/github/workflow/status/chaffelson/docker-ansible-alpine/Docker%20Image%20CI?maxAge=2592000)](https://github.com/Chaffelson/docker-ansible-alpine/actions?query=workflow%3A%22Docker+Image+CI%22) [![Docker Pulls](https://img.shields.io/docker/pulls/chaffelson/cdp-ansible.svg)](https://hub.docker.com/r/chaffelson/cdp-ansible/)
 
 ## Usage
 
@@ -10,6 +10,7 @@
 |----------------------|------------------|---------------------------------------------|
 | PIP_REQUIREMENTS     | requirements.txt | install python library requirements         |
 | ANSIBLE_REQUIREMENTS | requirements.yml | install ansible galaxy roles requirements   |
+| ANSIBLE_COLLECTION_REQUIREMENTS | collection_requirements.yml | install ansible galaxy collection requirements   |
 | DEPLOY_KEY           |                  | pass an SSH private key to use in container |
 
 ### Run Playbook
@@ -47,3 +48,13 @@ docker run -it --rm \
   sh
 ```
 
+### Build locally with additional options
+```
+docker build \
+--build-arg ANSIBLE_VERSION=2.9.10 \
+--build-arg ANSIBLE_LINT_VERSION=4.2.0 \
+--build-arg ADDITIONAL_PYTHON_REQS='https://raw.githubusercontent.com/ansible-collections/azure/dev/requirements-azure.txt' \
+--build-arg ANSIBLE_COLLECTION_PREINSTALL='azure.azcollection community.aws amazon.aws' \
+--build-arg INCLUDE_AZURE_CLI=true \
+-t myimg:latest .
+```

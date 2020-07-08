@@ -22,6 +22,15 @@ docker run -it --rm \
   ansible-playbook -i inventory playbook.yml
 ```
 
+### Run with mounted Cloud Service Profile
+docker run -it --rm \
+  -v ${PWD}:/ansible \
+  --mount "type=bind,source=${HOME}/.aws,target=/root/.aws" \
+  --mount "type=bind,source=${HOME}/.cdp,target=/root/.cdp" \
+  --mount "type=bind,source=${HOME}/.azure,target=/root/.azure" \
+  chaffelson/cdp-ansible:latest \
+  playbook.yml
+
 ### Generate Base Role structure
 
 ```

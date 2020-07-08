@@ -13,6 +13,8 @@ ARG ADDITIONAL_PYTHON_REQS
 ARG ANSIBLE_COLLECTION_PREINSTALL
 # This will install the Azure CLI in a separate virtualenv and put it on PATH as it is fairly incompatible with many things
 ARG INCLUDE_AZURE_CLI
+# This will include Kubectl
+ARG INCLUDE_KUBECTL
 
 # Metadata
 LABEL maintainer="Chaffelson <chaffelson@gmail.com>" \
@@ -33,23 +35,26 @@ RUN apk --update --no-cache add \
         python3\
         rsync \
         bash \
+        curl \
         sshpass
+
+RUN if [ -n "$INCLUDE_KUBECTL" ]; then echo "installing Kubectl" && curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x ./kubectl && mv ./kubectl /usr/local/bin ; fi
 
 RUN apk --update add --virtual \
         .build-deps \
         python3-dev \
         libffi-dev \
         openssl-dev \
-        wget \
         build-base \
  && pip3 install --upgrade \
         pip \
         cffi \
+        wheel \
  && pip3 install \
         ansible==${ANSIBLE_VERSION} \
         ansible-lint==${ANSIBLE_LINT_VERSION} \
  && if [ -n "$ADDITIONAL_PYTHON_REQS" ]; then pip3 install -r ${ADDITIONAL_PYTHON_REQS} ; fi \
- && if [ -n "$INCLUDE_AZURE_CLI" ]; then wget -q https://azurecliprod.blob.core.windows.net/install.py && printf "\n/usr/local/bin\nn\n" | python3 install.py ; fi \
+ && if [ -n "$INCLUDE_AZURE_CLI" ]; then echo "installing Azure CLI" && curl -LO https://azurecliprod.blob.core.windows.net/install.py && printf "\n/usr/local/bin\nn\n" | python3 install.py ; fi \
  && apk del \
         .build-deps \
  && rm -rf /var/cache/apk/*

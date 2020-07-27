@@ -36,9 +36,10 @@ RUN apk --update --no-cache add \
         rsync \
         bash \
         curl \
+        groff \
+        less \
+        mailcap \
         sshpass
-
-RUN if [ -n "$INCLUDE_KUBECTL" ]; then echo "installing Kubectl" && curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && chmod +x ./kubectl && mv ./kubectl /usr/local/bin ; fi
 
 RUN apk --update add --virtual \
         .build-deps \
@@ -60,6 +61,16 @@ RUN apk --update add --virtual \
  && rm -rf /var/cache/apk/*
 
 RUN if [ -n "$ANSIBLE_COLLECTION_PREINSTALL" ]; then ansible-galaxy collection install ${ANSIBLE_COLLECTION_PREINSTALL}; fi
+
+RUN if [ -n "$INCLUDE_KUBECTL" ]; then \
+    echo "installing Kubectl" \
+    && curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
+    && chmod +x ./kubectl \
+    && mv ./kubectl /usr/local/bin \
+    && curl -LO https://amazon-eks.s3.us-west-2.amazonaws.com/1.16.8/2020-04-16/bin/linux/amd64/aws-iam-authenticator \
+    && chmod +x ./aws-iam-authenticator \
+    && mv ./aws-iam-authenticator /usr/local/bin \
+    ; fi
 
 RUN mkdir -p /etc/ansible \
  && echo 'localhost' > /etc/ansible/hosts \

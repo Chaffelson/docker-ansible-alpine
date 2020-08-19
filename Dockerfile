@@ -39,15 +39,18 @@ RUN apk --update --no-cache add \
         groff \
         less \
         mailcap \
-        sshpass
+        sshpass \
+        libxslt-dev \
+        libxml2-dev \
+        libgcrypt-dev
 
 RUN apk --update add --virtual \
         .build-deps \
         python3-dev \
         libffi-dev \
         openssl-dev \
+        musl-dev \
         libc-dev \
-        libxslt-dev \
         build-base \
  && pip3 install --upgrade \
         pip \

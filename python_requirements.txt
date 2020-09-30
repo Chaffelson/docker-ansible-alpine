@@ -1,0 +1,10 @@
+-r https://raw.githubusercontent.com/ansible-collections/azure/dev/requirements-azure.txt
+boto
+boto3
+awscli
+cdpcli>=0.9.16
+colorama<=0.3.3,>=0.2.5
+docutils==0.14
+jsonpointer
+nipyapi
+jsonmerge

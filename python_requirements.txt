@@ -2,7 +2,7 @@
 boto
 boto3
 awscli
-cdpcli>=0.9.17
+cdpcli>=0.9.18
 colorama<=0.3.3,>=0.2.5
 docutils==0.14
 jsonpointer

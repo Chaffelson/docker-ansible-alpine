@@ -14,6 +14,8 @@ ARG NODEPS_PYTHON_REQS
 ARG ANSIBLE_COLLECTION_PREINSTALL
 # This will install the Azure CLI in a separate virtualenv and put it on PATH as it is fairly incompatible with many things
 ARG INCLUDE_AZURE_CLI
+# This will install the Google Cloud CLI
+ARG INCLUDE_GCLOUD_CLI
 # This will include Kubectl
 ARG INCLUDE_KUBECTL
 
@@ -39,6 +41,8 @@ RUN apk --update --no-cache add \
         curl \
         groff \
         less \
+        tar \
+        which \
         mailcap \
         sshpass \
         libxslt-dev \
@@ -68,6 +72,8 @@ RUN apk --update add --virtual \
  && rm -rf /var/cache/apk/*
 
 RUN if [ -n "$ANSIBLE_COLLECTION_PREINSTALL" ]; then ansible-galaxy collection install ${ANSIBLE_COLLECTION_PREINSTALL}; fi
+
+RUN if [ -n "$INCLUDE_GCLOUD_CLI" ]; then curl -sSL https://sdk.cloud.google.com > /tmp/gcl && bash /tmp/gcl --install-dir=/root --disable-prompts && export PATH=$PATH:/root/google-cloud-sdk/bin; fi
 
 RUN if [ -n "$INCLUDE_KUBECTL" ]; then \
     echo "installing Kubectl" \

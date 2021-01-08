@@ -9,6 +9,7 @@ ARG DOCKER_TAG
 ARG VCS_REF
 # Python requirements file for additional modules to install while the deps are loaded
 ARG ADDITIONAL_PYTHON_REQS
+ARG NODEPS_PYTHON_REQS
 # space separated list of Ansible Collections to install during build
 ARG ANSIBLE_COLLECTION_PREINSTALL
 # This will install the Azure CLI in a separate virtualenv and put it on PATH as it is fairly incompatible with many things
@@ -56,10 +57,11 @@ RUN apk --update add --virtual \
         pip \
         cffi \
         wheel \
+        pipx \
  && pip3 install \
         ansible==${ANSIBLE_VERSION} \
         ansible-lint==${ANSIBLE_LINT_VERSION} \
- && if [ -n "$ADDITIONAL_PYTHON_REQS" ]; then pip3 install -r ${ADDITIONAL_PYTHON_REQS} ; fi \
+ && if [ -n "$ADDITIONAL_PYTHON_REQS" ]; then pip3 install -r ${ADDITIONAL_PYTHON_REQS} && pip3 install -r ${NODEPS_PYTHON_REQS} ; fi \
  && if [ -n "$INCLUDE_AZURE_CLI" ]; then echo "installing Azure CLI" && curl -LO https://azurecliprod.blob.core.windows.net/install.py && printf "\n/usr/local/bin\nn\n" | python3 install.py ; fi \
  && apk del \
         .build-deps \

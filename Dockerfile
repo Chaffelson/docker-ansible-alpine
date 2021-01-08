@@ -61,7 +61,7 @@ RUN apk --update add --virtual \
  && pip3 install \
         ansible==${ANSIBLE_VERSION} \
         ansible-lint==${ANSIBLE_LINT_VERSION} \
- && if [ -n "$ADDITIONAL_PYTHON_REQS" ]; then pip3 install -r ${ADDITIONAL_PYTHON_REQS} && pip3 install -r ${NODEPS_PYTHON_REQS} ; fi \
+ && if [ -n "$ADDITIONAL_PYTHON_REQS" ]; then pip3 install -r ${ADDITIONAL_PYTHON_REQS} && pip3 install --no-deps -r ${NODEPS_PYTHON_REQS} ; fi \
  && if [ -n "$INCLUDE_AZURE_CLI" ]; then echo "installing Azure CLI" && curl -LO https://azurecliprod.blob.core.windows.net/install.py && printf "\n/usr/local/bin\nn\n" | python3 install.py ; fi \
  && apk del \
         .build-deps \

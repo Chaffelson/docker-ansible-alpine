@@ -18,7 +18,7 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Build the tagged Docker image
-        run: docker build . --tag chaffelson/cdp-ansible:${{steps.vars.outputs.tag}} --build-arg VCS_REF='https://github.com/Chaffelson/docker-ansible-alpine' --build-arg BUILD_DATE=${{ steps.date.outputs.date }} --build-arg ANSIBLE_VERSION=2.10.0 --build-arg ANSIBLE_LINT_VERSION=4.2.0 --build-arg ADDITIONAL_PYTHON_REQS='https://raw.githubusercontent.com/Chaffelson/docker-ansible-alpine/master/python_reqs_deps.txt' --build-arg ANSIBLE_COLLECTION_PREINSTALL='azure.azcollection community.aws amazon.aws google.cloud' --build-arg INCLUDE_AZURE_CLI=true NODEPS_PYTHON_REQS='https://raw.githubusercontent.com/Chaffelson/docker-ansible-alpine/master/python_reqs_nodeps.txt'
+        run: docker build . --tag chaffelson/cdp-ansible:${{steps.vars.outputs.tag}} --build-arg VCS_REF='https://github.com/Chaffelson/docker-ansible-alpine' --build-arg BUILD_DATE=${{ steps.date.outputs.date }} --build-arg ANSIBLE_VERSION=2.10.5 --build-arg ANSIBLE_LINT_VERSION=4.2.0 --build-arg ADDITIONAL_PYTHON_REQS='https://raw.githubusercontent.com/Chaffelson/docker-ansible-alpine/master/python_reqs_deps.txt' --build-arg ANSIBLE_COLLECTION_PREINSTALL='azure.azcollection community.aws amazon.aws google.cloud' --build-arg INCLUDE_AZURE_CLI=true NODEPS_PYTHON_REQS='https://raw.githubusercontent.com/Chaffelson/docker-ansible-alpine/master/python_reqs_nodeps.txt'
       - name: Push the tagged Docker image
         run: docker push chaffelson/cdp-ansible:${{steps.vars.outputs.tag}}
       - name: Also Tag the build as Latest

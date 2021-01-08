@@ -73,7 +73,7 @@ RUN apk --update add --virtual \
 
 RUN if [ -n "$ANSIBLE_COLLECTION_PREINSTALL" ]; then ansible-galaxy collection install ${ANSIBLE_COLLECTION_PREINSTALL}; fi
 
-RUN if [ -n "$INCLUDE_GCLOUD_CLI" ]; then curl -sSL https://sdk.cloud.google.com > /tmp/gcl && bash /tmp/gcl --install-dir=/root --disable-prompts && export PATH=$PATH:/root/google-cloud-sdk/bin; fi
+RUN if [ -n "$INCLUDE_GCLOUD_CLI" ]; then curl -sSL https://sdk.cloud.google.com > /tmp/gcl && bash /tmp/gcl --install-dir=/root --disable-prompts; fi
 
 RUN if [ -n "$INCLUDE_KUBECTL" ]; then \
     echo "installing Kubectl" \
@@ -93,6 +93,8 @@ Host *\n\
     StrictHostKeyChecking no\n\
     UserKnownHostsFile=/dev/null\n\
 """ >> /etc/ssh/ssh_config
+
+ENV PATH "$PATH:/root/google-cloud-sdk/bin"
 
 COPY entrypoint /usr/local/bin/
 

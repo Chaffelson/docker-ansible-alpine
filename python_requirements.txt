@@ -1,11 +1,10 @@
+cdpcli-beta>=0.9.23
 -r https://raw.githubusercontent.com/ansible-collections/azure/dev/requirements-azure.txt
 boto
 boto3
 awscli
 google-auth
-cdpcli-beta>=0.9.23
-colorama<=0.3.3,>=0.2.5
-docutils==0.14
+docutils
 jsonpointer
 nipyapi
 jsonmerge

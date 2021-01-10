@@ -7,3 +7,4 @@ docutils
 jsonpointer
 nipyapi
 jsonmerge
+netaddr

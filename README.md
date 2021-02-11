@@ -1,3 +1,5 @@
+# Please note I have stopped maintaining this fork in favour of using https://github.com/cloudera-labs/ansible-runner
+
 # Docker-Ansible base image
 
 [![Layers](https://images.microbadger.com/badges/image/chaffelson/cdp-ansible.svg)](https://microbadger.com/images/chaffelson/cdp-ansible) [![GitHub issues](https://img.shields.io/github/issues/Chaffelson/docker-ansible-alpine.svg)](https://github.com/Chaffelson/docker-ansible-alpine) [![Github Automated build](https://img.shields.io/github/workflow/status/chaffelson/docker-ansible-alpine/Docker%20Image%20CI?maxAge=2592000)](https://github.com/Chaffelson/docker-ansible-alpine/actions?query=workflow%3A%22Docker+Image+CI%22) [![Docker Pulls](https://img.shields.io/docker/pulls/chaffelson/cdp-ansible.svg)](https://hub.docker.com/r/chaffelson/cdp-ansible/)
